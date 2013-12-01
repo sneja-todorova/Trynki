@@ -1,8 +1,8 @@
-package igraEziTura;
+package headTailGame;
 
 import java.util.Random;
 
-public class GameHeadTails implements Runnable{
+public class HeadTailGame implements Runnable{
 	private String personName;
 	public Thread person;
 	private int coin;
@@ -11,7 +11,7 @@ public class GameHeadTails implements Runnable{
 	Random rand = new Random();
 	private int victories;
 	
-	public GameHeadTails(String name){
+	public HeadTailGame(String name){
 		this.personName = name;
 		this.person = new Thread(this, this.personName);
 		this.coin = 0;
@@ -32,7 +32,7 @@ public class GameHeadTails implements Runnable{
 		return this.personName;
 	}
 	
-	public int getOccurrencesHead(){
+	public int getHeadOccurrences(){
 		return this.occurrencesHead;
 	}
 	
@@ -53,8 +53,8 @@ public class GameHeadTails implements Runnable{
 	}
 	
 	
-	
 	//1 = "Head" ,  2 = "Tail"
+	
 	
 	@Override
 	public void run() {
@@ -65,10 +65,6 @@ public class GameHeadTails implements Runnable{
 				-- this.occurrencesHead ;
 				return;
 			}
-		}
-		
-   }
-		
+		}		
+	}	
 }
-
-
