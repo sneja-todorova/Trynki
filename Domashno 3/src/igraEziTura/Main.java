@@ -41,7 +41,13 @@ public class Main {
 		thirdPerson.setTochki(thirdPerson.getSreshtaniqEzi());
 		
 		System.out.print("Ot igra nomer 1" + " "); 
-		pobeditel(firstPerson, secondPerson, thirdPerson);
+		
+		try {
+			pobeditel(firstPerson, secondPerson, thirdPerson);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
 		System.out.println();
 		
 		for (int i=1; i<broiIgri; i++){
@@ -64,7 +70,14 @@ public class Main {
 			thirdPerson.setTochki(thirdPerson.getSreshtaniqEzi());
 			
 			System.out.print("Ot igra nomer " + (i+1) + " "); 
-			pobeditel(firstPerson, secondPerson, thirdPerson);
+			
+			try {
+				pobeditel(firstPerson, secondPerson, thirdPerson);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return;
+			}
+			
 			System.out.println();
 		}
 		
@@ -73,6 +86,7 @@ public class Main {
 			kraenPobeditel(firstPerson, secondPerson, thirdPerson);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			return;
 		}
 		
 	
@@ -80,23 +94,68 @@ public class Main {
 		System.out.println();
 	}
 	
-	public static void pobeditel(EziTura first, EziTura second, EziTura third){
+	public static void pobeditel(EziTura first, EziTura second, EziTura third) throws InterruptedException{
 		int max = Math.max(Math.max(first.getSreshtaniqEzi(), second.getSreshtaniqEzi()), third.getSreshtaniqEzi());
 		if(max == first.getSreshtaniqEzi()){
+			if(max == first.getSreshtaniqEzi()){
+				if(max == second.getSreshtaniqEzi() && max == third.getSreshtaniqEzi()){
+					first.run();
+					second.run();
+					third.run();
+					
+					first.person.join();
+					second.person.join();
+					third.person.join();
+					
+					pobeditel(first, second, third);
+					return;
+				}
+				else if(max == second.getSreshtaniqEzi()){
+					first.run();
+					second.run();
+					
+					first.person.join();
+					second.person.join();
+					
+					pobeditel(first, second, third);
+					return;
+				}
+				else if(max == third.getSreshtaniqEzi()){
+					first.run();
+					third.run();
+					
+					first.person.join();
+					third.person.join();
+					
+					pobeditel(first, second, third);
+					return;
+				}
 			System.out.printf("pobeditelq e: %s, koito ima %d hvyrlqniq \"ezi\" \n", first.getPersonName(), max);
+			return;
 		}
 		else if(max == second.getSreshtaniqEzi()){
+			if(max == third.getTochki()){
+				second.run();
+				third.run();
+				
+				second.person.join();
+				third.person.join();
+				
+				pobeditel(first, second, third);
+				return;
+			}
+		}
 			System.out.printf("pobeditelq e: %s, koito ima %d hvyrlqniq \"ezi\" \n", second.getPersonName(), max);
+			return;
 		}
 		else if(max == third.getSreshtaniqEzi()){
 			System.out.printf("pobeditelq e: %s, koito ima %d hvyrlqniq \"ezi\" \n", third.getPersonName(), max);
+			return;
 		}
 	}
 	
 	
-	public static void kraenPobeditel(EziTura first, EziTura second, EziTura third) throws InterruptedException{
-		
-		
+	public static void kraenPobeditel(EziTura first, EziTura second, EziTura third) throws InterruptedException{		
 		
 		int max = Math.max(Math.max(first.getTochki(), second.getTochki()), third.getTochki());
 		
