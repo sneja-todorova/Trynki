@@ -9,14 +9,14 @@ public class Main {
 	 * @throws InterruptedException 
 	 */
 	public static void main(String[] args){
-		System.out.print("Kolko igri shte izigraqt igrachite? ");
+		System.out.print("Input number of games: ");
 		Scanner input = new Scanner(System.in);
 		
-		int broiIgri = input.nextInt();
+		int NumberOfGames = input.nextInt();
 		
-		EziTura firstPerson = new EziTura("Ivan");
-		EziTura secondPerson = new EziTura("Pesho");
-		EziTura thirdPerson = new EziTura("Misho");
+		GameHeadTails firstPerson = new GameHeadTails("Ivan");
+		GameHeadTails secondPerson = new GameHeadTails("Pesho");
+		GameHeadTails thirdPerson = new GameHeadTails("Misho");
 		
 		secondPerson.person.start();		
 		firstPerson.person.start();		
@@ -36,21 +36,21 @@ public class Main {
 		}
 		
 				
-		firstPerson.setTochki(firstPerson.getSreshtaniqEzi());		
-		secondPerson.setTochki(secondPerson.getSreshtaniqEzi());		
-		thirdPerson.setTochki(thirdPerson.getSreshtaniqEzi());
+		firstPerson.setPoints(firstPerson.getOccurrencesHead());		
+		secondPerson.setPoints(secondPerson.getOccurrencesHead());		
+		thirdPerson.setPoints(thirdPerson.getOccurrencesHead());
 		
-		System.out.print("Ot igra nomer 1" + " "); 
+		System.out.print("The winner at game number 1 is:  "); 
 		
 		try {
-			pobeditel(firstPerson, secondPerson, thirdPerson);
+			winner(firstPerson, secondPerson, thirdPerson);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
 		
 		System.out.println();
 		
-		for (int i=1; i<broiIgri; i++){
+		for (int i=1; i<NumberOfGames; i++){
 			firstPerson.run();
 			secondPerson.run();
 			thirdPerson.run();
@@ -65,14 +65,14 @@ public class Main {
 			}
 			
 			
-			firstPerson.setTochki(firstPerson.getSreshtaniqEzi());
-			secondPerson.setTochki(secondPerson.getSreshtaniqEzi());
-			thirdPerson.setTochki(thirdPerson.getSreshtaniqEzi());
+			firstPerson.setPoints(firstPerson.getOccurrencesHead());
+			secondPerson.setPoints(secondPerson.getOccurrencesHead());
+			thirdPerson.setPoints(thirdPerson.getOccurrencesHead());
 			
-			System.out.print("Ot igra nomer " + (i+1) + " "); 
+			System.out.print("The winner at game number " + (i+1) + " is: "); 
 			
 			try {
-				pobeditel(firstPerson, secondPerson, thirdPerson);
+				winner(firstPerson, secondPerson, thirdPerson);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return;
@@ -81,9 +81,8 @@ public class Main {
 			System.out.println();
 		}
 		
-		System.out.print("Krainiq pobeditel e: "); 
 		try {
-			kraenPobeditel(firstPerson, secondPerson, thirdPerson);
+			resultOfGames(firstPerson, secondPerson, thirdPerson);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			return;
@@ -94,11 +93,11 @@ public class Main {
 		System.out.println();
 	}
 	
-	public static void pobeditel(EziTura first, EziTura second, EziTura third) throws InterruptedException{
-		int max = Math.max(Math.max(first.getSreshtaniqEzi(), second.getSreshtaniqEzi()), third.getSreshtaniqEzi());
-		if(max == first.getSreshtaniqEzi()){
-			if(max == first.getSreshtaniqEzi()){
-				if(max == second.getSreshtaniqEzi() && max == third.getSreshtaniqEzi()){
+	public static void winner(GameHeadTails first, GameHeadTails second, GameHeadTails third) throws InterruptedException{
+		int max = Math.max(Math.max(first.getOccurrencesHead(), second.getOccurrencesHead()), third.getOccurrencesHead());
+		if(max == first.getOccurrencesHead()){
+			if(max == first.getOccurrencesHead()){
+				if(max == second.getOccurrencesHead() && max == third.getOccurrencesHead()){
 					first.run();
 					second.run();
 					third.run();
@@ -107,104 +106,62 @@ public class Main {
 					second.person.join();
 					third.person.join();
 					
-					pobeditel(first, second, third);
+					winner(first, second, third);
 					return;
 				}
-				else if(max == second.getSreshtaniqEzi()){
+				else if(max == second.getOccurrencesHead()){
 					first.run();
 					second.run();
 					
 					first.person.join();
 					second.person.join();
 					
-					pobeditel(first, second, third);
+					winner(first, second, third);
 					return;
 				}
-				else if(max == third.getSreshtaniqEzi()){
+				else if(max == third.getOccurrencesHead()){
 					first.run();
 					third.run();
 					
 					first.person.join();
 					third.person.join();
 					
-					pobeditel(first, second, third);
+					winner(first, second, third);
 					return;
 				}
-			System.out.printf("pobeditelq e: %s, koito ima %d hvyrlqniq \"ezi\" \n", first.getPersonName(), max);
+			System.out.printf(" %s. He has %d throws \"head\". \n", first.getPersonName(), max);
+			first.setVictories(1);
 			return;
 		}
-		else if(max == second.getSreshtaniqEzi()){
-			if(max == third.getTochki()){
+		else if(max == second.getOccurrencesHead()){
+			if(max == third.getPoints()){
 				second.run();
 				third.run();
 				
 				second.person.join();
 				third.person.join();
 				
-				pobeditel(first, second, third);
+				winner(first, second, third);
 				return;
 			}
 		}
-			System.out.printf("pobeditelq e: %s, koito ima %d hvyrlqniq \"ezi\" \n", second.getPersonName(), max);
+			System.out.printf(" %s. He has %d throws \"head\". \n", second.getPersonName(), max);
+			second.setVictories(1);
 			return;
 		}
-		else if(max == third.getSreshtaniqEzi()){
-			System.out.printf("pobeditelq e: %s, koito ima %d hvyrlqniq \"ezi\" \n", third.getPersonName(), max);
+		else if(max == third.getOccurrencesHead()){
+			System.out.printf(" %s. He has %d throws \"head\". \n", third.getPersonName(), max);
+			third.setVictories(1);
 			return;
 		}
 	}
 	
 	
-	public static void kraenPobeditel(EziTura first, EziTura second, EziTura third) throws InterruptedException{		
+	public static void resultOfGames(GameHeadTails first, GameHeadTails second, GameHeadTails third) throws InterruptedException{		
 		
-		int max = Math.max(Math.max(first.getTochki(), second.getTochki()), third.getTochki());
-		
-		if(max == first.getTochki()){
-			if(max == second.getTochki() && max == third.getTochki()){
-				
-				first.run();
-				second.run();
-				third.run();
-				
-				first.person.join();
-				second.person.join();
-				third.person.join();
-				
-				kraenPobeditel(first, second, third);
-				return;
-			}
-			else if(max == second.getTochki()){
-				
-				first.run();
-				second.run();
-				
-				first.person.join();
-				second.person.join();	
-				
-				kraenPobeditel(first, second, third);
-				return;
-			}
-			System.out.printf("%s, koito ima obshto %d hvyrlqniq \"ezi\" \n", first.getPersonName(), max);
-			return;
-		}
-		else if(max == second.getTochki()){
-			if(max == third.getTochki()){
-				
-				first.run();
-				third.run();
-				
-				first.person.join();
-				third.person.join();
-				
-				kraenPobeditel(first, second, third);
-				return;
-			}
-			System.out.printf("%s, koito ima obshto %d hvyrlqniq \"ezi\" \n", second.getPersonName(), max);
-			return;
-		}
-		else if(max == third.getSreshtaniqEzi()){
-			System.out.printf("%s, koito ima obshto %d hvyrlqniq \"ezi\" \n", third.getPersonName(), max);
-			return;
-		}			
+		System.out.println("After games played, final result is:");
+		System.out.printf("%s has %d victories and total number of points (total number of occurances \"Head\"): %d\n", first.getPersonName(), first.getVictories(), first.getPoints());
+		System.out.printf("%s has %d victories and total number of points (total number of occurances \"Head\"): %d\n", second.getPersonName(), second.getVictories(), second.getPoints());
+		System.out.printf("%s has %d victories and total number of points (total number of occurances \"Head\"): %d\n", third.getPersonName(), third.getVictories(), third.getPoints());
 	}
 }
