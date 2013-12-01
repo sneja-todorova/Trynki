@@ -1,4 +1,4 @@
-package headTailGame;
+package headTailsGame;
 
 import java.util.Scanner;
 
@@ -14,9 +14,9 @@ public class Main {
 		
 		int numberOfGames = input.nextInt();
 		
-		HeadTailGame firstPerson = new HeadTailGame("Ivan");
-		HeadTailGame secondPerson = new HeadTailGame("Pesho");
-		HeadTailGame thirdPerson = new HeadTailGame("Misho");
+		HeadTailsGame firstPerson = new HeadTailsGame("Ivan");
+		HeadTailsGame secondPerson = new HeadTailsGame("Pesho");
+		HeadTailsGame thirdPerson = new HeadTailsGame("Misho");
 		
 		secondPerson.person.start();		
 		firstPerson.person.start();		
@@ -69,7 +69,7 @@ public class Main {
 		System.out.println();
 	}
 	
-	public static void winner(HeadTailGame first, HeadTailGame second, HeadTailGame third) throws InterruptedException{
+	public static void winner(HeadTailsGame first, HeadTailsGame second, HeadTailsGame third) throws InterruptedException{
 		int max = Math.max(Math.max(first.getHeadOccurrences(), second.getHeadOccurrences()), third.getHeadOccurrences());
 		if(max == first.getHeadOccurrences()){
 			if(max == second.getHeadOccurrences() && max == third.getHeadOccurrences()){
@@ -106,8 +106,8 @@ public class Main {
 			}
 			
 			System.out.printf(" %s. He has %d throws \"head\". \n", first.getPersonName(), max);
-			first.setVictories(1);
 			// Increment victories by 1
+			first.setVictories(1);
 			return;
 		}
 		else if(max == second.getHeadOccurrences()){
@@ -123,27 +123,27 @@ public class Main {
 			}
 	
 			System.out.printf(" %s. He has %d throws \"head\". \n", second.getPersonName(), max);
-			second.setVictories(1);
 			// Increment victories by 1
+			second.setVictories(1);
 			return;
 		}
 		
 		else if(max == third.getHeadOccurrences()){
 			System.out.printf(" %s. He has %d throws \"head\". \n", third.getPersonName(), max);
-			third.setVictories(1);
 			// Increment victories by 1
+			third.setVictories(1);
 			return;
 		}
 	}
 	
 	
 	
-	public static void resultOfGames(HeadTailGame first, HeadTailGame second, HeadTailGame third, int number) throws InterruptedException{		
+	public static void resultOfGames(HeadTailsGame first, HeadTailsGame second, HeadTailsGame third, int number) throws InterruptedException{		
 		
 		System.out.printf("After %d games played, final result is:\n", number);
-		System.out.printf("%s has %d victories and total number of points (total number of occurances \"Head\"): %d\n", first.getPersonName(), first.getVictories(), first.getPoints());
-		System.out.printf("%s has %d victories and total number of points (total number of occurances \"Head\"): %d\n", second.getPersonName(), second.getVictories(), second.getPoints());
-		System.out.printf("%s has %d victories and total number of points (total number of occurances \"Head\"): %d\n", third.getPersonName(), third.getVictories(), third.getPoints());
+		System.out.printf("%s has %d victories and total number of points (total number of occurrences \"Head\"): %d\n", first.getPersonName(), first.getVictories(), first.getPoints());
+		System.out.printf("%s has %d victories and total number of points (total number of occurrences \"Head\"): %d\n", second.getPersonName(), second.getVictories(), second.getPoints());
+		System.out.printf("%s has %d victories and total number of points (total number of occurrences \"Head\"): %d\n", third.getPersonName(), third.getVictories(), third.getPoints());
 	}
 }
 

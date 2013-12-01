@@ -1,21 +1,21 @@
-package headTailGame;
+package headTailsGame;
 
 import java.util.Random;
 
-public class HeadTailGame implements Runnable{
+public class HeadTailsGame implements Runnable{
 	private String personName;
 	public Thread person;
 	private int coin;
-	private int occurrencesHead;
+	private int headOccurrences;
 	private int points;
-	Random rand = new Random();
 	private int victories;
+	Random rand = new Random();
 	
-	public HeadTailGame(String name){
+	public HeadTailsGame(String name){
 		this.personName = name;
 		this.person = new Thread(this, this.personName);
 		this.coin = 0;
-		this.occurrencesHead = 0;
+		this.headOccurrences = 0;
 		this.points = 0;
 		this.victories = 0;
 	}
@@ -23,17 +23,18 @@ public class HeadTailGame implements Runnable{
 	public int getCoin(){
 		return this.coin;
 	}
+	
 	public void setCoin(int newCoin){
 		this.coin = newCoin;
-		this.occurrencesHead ++;
-		
+		this.headOccurrences ++;	
 	}
+	
 	public String getPersonName(){
 		return this.personName;
 	}
 	
 	public int getHeadOccurrences(){
-		return this.occurrencesHead;
+		return this.headOccurrences;
 	}
 	
 	public int getPoints(){
@@ -62,7 +63,7 @@ public class HeadTailGame implements Runnable{
 			this.setCoin(rand.nextInt(2) + 1);
 			if(this.getCoin() != 1){
 				person.interrupt();
-				-- this.occurrencesHead ;
+				-- this.headOccurrences ;
 				return;
 			}
 		}		
