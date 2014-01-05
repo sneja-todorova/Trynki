@@ -2,13 +2,10 @@ package pop3Client;
 
 import java.io.*;
 import java.net.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import com.sun.xml.*;
-import com.sun.xml.internal.ws.api.message.Message;
+import java.util.*;
 
 public class POP3Client {
-    private Socket clientSocket;
+	private Socket clientSocket;
     private boolean debug = false;
     private BufferedReader in;
     private BufferedWriter out;
@@ -82,37 +79,40 @@ public class POP3Client {
         return Integer.parseInt(values[1]); //value[0] - busena, value[1] - pranesimu skaicius value[2] - pranesimu uzimama vieta
     }
     
-    protected Message getMessage(int messageNumber) throws IOException {
-        String response = sendCommand("RETR " + messageNumber);
-        HashMap<String, LinkedList<String>> headers = new HashMap<String, LinkedList<String>>();
-        String headerName = null;
-        // process headers
-        while ((response = readResponseLine()).length() != 0) {
-            if (response.startsWith("\t")) 
-            continue; //no process of multiline headers
-        
-            int colonPosition = response.indexOf(":");
-            headerName = response.substring(0, colonPosition);
-            String headerValue;
-            if (headerName.length() > colonPosition) 
-                headerValue = response.substring(colonPosition + 2);
-            else
-                headerValue = "";
-        
-            LinkedList<String> headerValues = headers.get(headerName);
-            if (headerValues == null){
-                headerValues = new LinkedList<String>();
-                headers.put(headerName, headerValues);
-            }
-            headerValues.add(headerValue);
-        }
-        // process body
-        StringBuilder bodyBuilder = new StringBuilder();
-        while (!(response = readResponseLine()).equals(".")) {
-            bodyBuilder.append(response + "\n");
-        }
-        return new Message(headers, bodyBuilder.toString());
-    }
+    protected Message getMessage(int i) throws IOException {
+    	String response = sendCommand("RETR " + i);
+    	Map<String, List<String>> headers = new HashMap<String, List<String>>();
+    	String headerName = null;
+    	// process headers
+    	while ((response = readResponseLine()).length() != 0) {
+	    	if (response.startsWith("\t")) {
+	    	continue; //no process of multiline headers
+	    	}
+	    	int colonPosition = response.indexOf(":");
+	    	headerName = response.substring(0, colonPosition);
+	    	String headerValue;
+	    	if (headerName.length() > colonPosition) {
+	    		headerValue = response.substring(colonPosition + 2);
+	    	} else {
+	    		headerValue = "";
+	    	}
+	    	
+	    	List<String> headerValues = headers.get(headerName);
+	    	if (headerValues == null) {
+		    	headerValues = new ArrayList<String>();
+		    	headers.put(headerName, headerValues);
+	    	}
+	    	
+	    	headerValues.add(headerValue);
+	    } 
+	    	// process body
+	    	StringBuilder bodyBuilder = new StringBuilder();
+	    	while (!(response = readResponseLine()).equals(".")) {
+	    	bodyBuilder.append(response + "\n");
+	    	}
+	    	return new Message(headers, bodyBuilder.toString());
+    	}
+
     
     public LinkedList<Message> getMessages() throws IOException {
         int numOfMessages = getNumberOfNewMessages();

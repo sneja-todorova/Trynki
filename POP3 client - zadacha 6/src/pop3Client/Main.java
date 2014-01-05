@@ -1,7 +1,6 @@
 package pop3Client;
 
 import java.util.*;
-import com.sun.xml.internal.ws.api.message.Message;
 
 import java.io.IOException;
 
@@ -16,8 +15,9 @@ class Main{
         
         LinkedList<Message> messages = client.getMessages();
         for (int index = 0; index < messages.size(); index++) {
-        System.out.println("--- Message num. " + index + " --- has");
-        System.out.println((messages.get(index)) + "bytes"); // getBytes (of messages)
+	        System.out.println("--- Message num. " + index + " --- has ");
+	        System.out.println((messages.get(index)).getBytes() + "bytes");
+	       // System.out.println("That message is: " + (messages.get(index)).getBody()); 
         }
         
         client.logout();
